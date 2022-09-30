@@ -5,9 +5,33 @@ const app = express()
 const PORT = process.env.PORT
 const cors = require("cors")
 const Course = require("./models/course")
+const passport = require("./passport")
 
-app.use(cors())
+app.use(
+  cors({
+    origin: "*",
+    methods: "GET, POST, PATCH, DELETE, PUT",
+    allowedHeaders: "Content-Type, Authorization",
+  })
+)
 app.use(express.json())
+app.use(passport.initialize())
+
+app.get(
+  "/auth/google",
+  passport.authenticate("google", { scope: ["email", "profile"] })
+)
+
+app.get(
+  "/auth/google/callback",
+  passport.authenticate("google", {
+    failureRedirect: "http://localhost:3000/login",
+  }),
+  function (req, res) {
+    // Successful authentication, redirect home.
+    res.redirect("http://localhost:3000/profile")
+  }
+)
 
 app.get("/", (req, res) => {
   console.log(`Esto es un log del entorno: ${process.env.NODE_ENV}`)
