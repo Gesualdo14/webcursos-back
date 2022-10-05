@@ -69,6 +69,18 @@ app.get("/courses", async (req, res) => {
   }
 })
 
+app.get("/courses/:id", async (req, res) => {
+  const { id } = req.params
+  console.log({ id })
+  try {
+    const course = await Course.findById(id)
+    res.status(200).json({ ok: true, data: course })
+  } catch (error) {
+    console.log({ error })
+    res.status(400).json({ ok: false, error })
+  }
+})
+
 app.post("/courses", async (req, res) => {
   const { name } = req.body
 
