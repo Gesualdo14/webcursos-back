@@ -19,7 +19,6 @@ passport.use(
       secretOrKey: process.env.JWT_SECRET_KEY,
     },
     async function (jwt_payload, done) {
-      console.log({ jwt_payload })
       try {
         const foundUser = await User.findOne({ id: jwt_payload.sub })
         done(null, foundUser)
@@ -65,12 +64,10 @@ passport.use(
 )
 
 passport.serializeUser(function (user, done) {
-  console.log("SERIALIZE")
   done(null, user._id)
 })
 
 passport.deserializeUser(async function (id, done) {
-  console.log("DESERIALIZE")
   try {
     const foundUser = await User.findById(id)
     done(null, foundUser)

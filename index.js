@@ -7,6 +7,7 @@ const cors = require("cors")
 const Course = require("./models/course")
 const passport = require("./passport")
 const generateJWT = require("./helpers/generateJWT")
+const Sale = require("./models/sales")
 
 app.use(
   cors({
@@ -71,10 +72,26 @@ app.get("/courses", async (req, res) => {
 
 app.get("/courses/:id", async (req, res) => {
   const { id } = req.params
-  console.log({ id })
+  const { user_id } = req.query
+  console.log({ user_id, id })
+
   try {
+    let hasBoughtTheCourse = false
+
+    if (mongoose.isValidObjectId(user_id)) {
+      const foundCourse = await Sale.exists({
+        course: id,
+        user: user_id,
+      })
+      hasBoughtTheCourse = !!foundCourse
+    }
+
     const course = await Course.findById(id)
-    res.status(200).json({ ok: true, data: course })
+
+    res.status(200).json({
+      ok: true,
+      data: { ...course.toObject(), hasBoughtTheCourse },
+    })
   } catch (error) {
     console.log({ error })
     res.status(400).json({ ok: false, error })
