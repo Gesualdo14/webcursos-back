@@ -30,7 +30,7 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 app.get("/", (req, res) => {
-  const fullPath = path.join(__dirname, "./google/google96cddf2cfa549b8d.html")
+  const fullPath = path.join(__dirname, "./google96cddf2cfa549b8d.html")
   res.sendFile(fullPath)
 })
 
