@@ -4,10 +4,12 @@ const express = require("express")
 const app = express()
 const PORT = process.env.PORT
 const cors = require("cors")
+const fs = require("fs")
 const Course = require("./models/course")
 const passport = require("./passport")
 const generateJWT = require("./helpers/generateJWT")
 const Sale = require("./models/sales")
+const path = require("path")
 
 app.use(
   cors({
@@ -26,6 +28,11 @@ app.use(
 )
 app.use(passport.initialize())
 app.use(passport.session())
+
+app.get("/", (req, res) => {
+  const fullPath = path.join(__dirname, "./google/google96cddf2cfa549b8d.html")
+  res.sendFile(fullPath)
+})
 
 app.get(
   "/auth/google",
@@ -53,11 +60,6 @@ app.get(
     res.redirect(`http://localhost:3000/profile?login_info=${login_info}`)
   }
 )
-
-app.get("/", (req, res) => {
-  console.log(`Esto es un log del entorno: ${process.env.NODE_ENV}`)
-  res.send("Hello World")
-})
 
 app.get("/courses", async (req, res) => {
   console.log("HOLAAAA")
