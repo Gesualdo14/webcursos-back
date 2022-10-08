@@ -29,9 +29,18 @@ app.use(
 app.use(passport.initialize())
 app.use(passport.session())
 
-app.get("/", (req, res) => {
-  const fullPath = path.join(__dirname, "./google96cddf2cfa549b8d.html")
-  res.sendFile(fullPath)
+app.get("/google96cddf2cfa549b8d.html", (req, res) => {
+  res.sendFile(
+    "google96cddf2cfa549b8d.html",
+    { root: path.join(__dirname) },
+    (err) => {
+      if (err) {
+        next(err)
+      } else {
+        console.log("File SENT")
+      }
+    }
+  )
 })
 
 app.get(
