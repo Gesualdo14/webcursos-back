@@ -29,9 +29,9 @@ app.use(
 app.use(passport.initialize())
 app.use(passport.session())
 
-app.get("/google96cddf2cfa549b8d.html", (req, res) => {
+app.get("/google357b89dfb4d4979a.html", (req, res) => {
   res.sendFile(
-    "google96cddf2cfa549b8d.html",
+    "google357b89dfb4d4979a.html",
     { root: path.join(__dirname) },
     (err) => {
       if (err) {
