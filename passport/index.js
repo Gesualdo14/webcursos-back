@@ -5,6 +5,7 @@ const User = require("../models/user")
 
 const jwtExtractor = (req) => {
   let token = null
+  console.log({ headers: req.headers })
   if (req && req.headers["authorization"]) {
     token = req.headers["authorization"].split(" ")[1]
   }
@@ -19,8 +20,9 @@ passport.use(
       secretOrKey: process.env.JWT_SECRET_KEY,
     },
     async function (jwt_payload, done) {
+      console.log({ jwt_payload })
       try {
-        const foundUser = await User.findOne({ id: jwt_payload.sub })
+        const foundUser = await User.findOne({ _id: jwt_payload.sub })
         done(null, foundUser)
       } catch (error) {
         done(error, null)
@@ -41,7 +43,7 @@ passport.use(
       try {
         const foundUser = await User.findOne({ googleId: profile.id })
 
-        console.log({ foundUser, profile: profile.emails[0] })
+        console.log({ profileId: profile.id })
 
         if (!!foundUser) {
           return done(null, foundUser)
@@ -64,6 +66,7 @@ passport.use(
 )
 
 passport.serializeUser(function (user, done) {
+  console.log({ user })
   done(null, user._id)
 })
 
