@@ -7,7 +7,7 @@ const Notification = require("../models/notification")
 
 router.post("/orders", passport.authenticate("jwt"), async (req, res) => {
   const { price, courseId } = req.body
-  const order = await createOrder()
+  const order = await createOrder(price)
   console.log({ order, user: req.user })
   const createdSale = await Sale.create({
     course: courseId,

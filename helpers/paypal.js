@@ -1,7 +1,7 @@
 const axios = require("axios")
 const { PAYPAL_CLIENT_ID, PAYPAL_APP_SECRET, PAYPAL_BASE_URL } = process.env
 
-const createOrder = async () => {
+const createOrder = async (price) => {
   const accessToken = await generateAccessToken()
 
   const url = `${PAYPAL_BASE_URL}/v2/checkout/orders`
@@ -19,7 +19,7 @@ const createOrder = async () => {
         {
           amount: {
             currency_code: "USD",
-            value: "100.00",
+            value: price,
           },
         },
       ],
