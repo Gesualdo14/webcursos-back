@@ -1,11 +1,10 @@
 const axios = require("axios")
-const { PAYPAL_CLIENT_ID, PAYPAL_APP_SECRET } = process.env
-const BASE_URL = "https://api-m.sandbox.paypal.com"
+const { PAYPAL_CLIENT_ID, PAYPAL_APP_SECRET, PAYPAL_BASE_URL } = process.env
 
 const createOrder = async () => {
   const accessToken = await generateAccessToken()
 
-  const url = `${BASE_URL}/v2/checkout/orders`
+  const url = `${PAYPAL_BASE_URL}/v2/checkout/orders`
 
   const { data } = await axios({
     url,
@@ -32,7 +31,7 @@ const createOrder = async () => {
 
 const capturePayment = async (orderId) => {
   const accessToken = await generateAccessToken()
-  const url = `${BASE_URL}/v2/checkout/orders/${orderId}/capture`
+  const url = `${PAYPAL_BASE_URL}/v2/checkout/orders/${orderId}/capture`
   const { data } = await axios({
     url,
     method: "POST",
@@ -53,7 +52,7 @@ async function generateAccessToken() {
 
   try {
     const { data } = await axios({
-      url: `${BASE_URL}/v1/oauth2/token`,
+      url: `${PAYPAL_BASE_URL}/v1/oauth2/token`,
       method: "POST",
       data: "grant_type=client_credentials",
       headers: {
