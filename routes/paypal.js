@@ -7,7 +7,7 @@ const Notification = require("../models/notification")
 
 router.post("/orders", passport.authenticate("jwt"), async (req, res) => {
   const { price, courseId } = req.body
-  const order = await createOrder()
+  const order = await createOrder(price)
   console.log({ order, user: req.user })
   const createdSale = await Sale.create({
     course: courseId,
@@ -35,6 +35,14 @@ router.post("/webhook", async (req, res) => {
   res.status(200).send()
 
   console.log("NOTIFICACION RECIBIDA")
+
+  if (req.body.event_type === "PAYMENT.CAPTURE.COMPLETED") {
+    const order_id = req.body.resource.supplementary_data.related_ids.order_id
+    await Sale.findOneAndUpdate(
+      { order_id },
+      { webhookReceived: true, order_status: "COMPLETED" }
+    )
+  }
 
   await Notification.create({
     params: req.params,
