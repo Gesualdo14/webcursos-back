@@ -3,6 +3,7 @@ const router = express.Router()
 const Sale = require("../models/sales")
 const { createOrder, capturePayment } = require("../helpers/paypal")
 const passport = require("passport")
+const Notification = require("../models/notification")
 
 router.post("/orders", passport.authenticate("jwt"), async (req, res) => {
   const { price, courseId } = req.body
@@ -28,6 +29,16 @@ router.post("/orders/:orderID/capture", async (req, res) => {
   )
   // TODO: store payment information such as the transaction ID
   res.json(captureData)
+})
+
+router.post("/webhook", async (req, res) => {
+  res.status(200).send()
+
+  await Notification.create({
+    params: req.params,
+    body: req.body,
+    query: req.query,
+  })
 })
 
 module.exports = router
