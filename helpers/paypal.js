@@ -40,9 +40,30 @@ const capturePayment = async (orderId) => {
       Authorization: `Bearer ${accessToken}`,
     },
   })
-  console.log({ data })
+  console.log({ data: data.purchase_units[0] })
 
   return data
+}
+
+const refundPayment = async (caputreId) => {
+  const accessToken = await generateAccessToken()
+
+  const url = `${PAYPAL_BASE_URL}/v2/payments/captures/${caputreId}/refund`
+  try {
+    const response = await axios({
+      url,
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+    console.log({ response })
+
+    return response.data
+  } catch (error) {
+    console.log({ error: error.response.data })
+  }
 }
 
 async function generateAccessToken() {
@@ -69,4 +90,5 @@ async function generateAccessToken() {
 module.exports = {
   createOrder,
   capturePayment,
+  refundPayment,
 }
