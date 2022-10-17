@@ -14,7 +14,9 @@ const saleSchema = new Schema(
     amount: Number,
     webhookReceived: Boolean,
     order_id: String,
+    capture_id: String,
     order_status: String,
+    paypal_links: Schema.Types.Array,
     payer: Schema.Types.Mixed,
   },
   {

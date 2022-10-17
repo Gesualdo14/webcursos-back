@@ -22,14 +22,14 @@ router.get("/:id", async (req, res) => {
 
   try {
     let hasBoughtTheCourse = false
-
+    let foundSale
     if (mongoose.isValidObjectId(user_id)) {
-      const foundCourse = await Sale.exists({
+      foundSale = await Sale.findOne({
         course: id,
         user: user_id,
         order_status: "COMPLETED",
       })
-      hasBoughtTheCourse = !!foundCourse
+      hasBoughtTheCourse = !!foundSale
     }
     const howManySales = await Sale.countDocuments({ course: id })
 
@@ -37,7 +37,12 @@ router.get("/:id", async (req, res) => {
 
     res.status(200).json({
       ok: true,
-      data: { ...course.toObject(), hasBoughtTheCourse, howManySales },
+      data: {
+        ...course.toObject(),
+        hasBoughtTheCourse,
+        howManySales,
+        capture_id: foundSale?.capture_id,
+      },
     })
   } catch (error) {
     console.log({ error })
