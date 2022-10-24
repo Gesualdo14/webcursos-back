@@ -23,22 +23,26 @@ router.post("/orders", passport.authenticate("jwt"), async (req, res) => {
   res.json(order)
 })
 
-router.post("/orders/:orderID/capture", async (req, res) => {
-  const { orderID } = req.params
-  const captureData = await capturePayment(orderID)
+router.post(
+  "/orders/:orderID/capture",
+  passport.authenticate("jwt"),
+  async (req, res) => {
+    const { orderID } = req.params
+    const captureData = await capturePayment(orderID)
 
-  const capture_id = captureData.purchase_units[0].payments.captures[0].id
-  await Sale.findOneAndUpdate(
-    { order_id: orderID },
-    {
-      order_status: "COMPLETED",
-      capture_id,
-      payer: captureData.payer,
-    }
-  )
-  // TODO: store payment information such as the transaction ID
-  res.json(capture_id)
-})
+    const capture_id = captureData.purchase_units[0].payments.captures[0].id
+    await Sale.findOneAndUpdate(
+      { order_id: orderID },
+      {
+        order_status: "COMPLETED",
+        capture_id,
+        payer: captureData.payer,
+      }
+    )
+    // TODO: store payment information such as the transaction ID
+    res.json(capture_id)
+  }
+)
 
 router.post(
   "/captures/:captureID/refund",
