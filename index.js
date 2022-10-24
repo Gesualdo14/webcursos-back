@@ -2,6 +2,7 @@ require("dotenv").config()
 const express = require("express")
 const app = express()
 const cors = require("cors")
+const usersRoutes = require("./routes/users")
 const coursesRoutes = require("./routes/courses")
 const paypalRoutes = require("./routes/paypal")
 const authRoutes = require("./routes/auth")
@@ -29,6 +30,7 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 // ROUTES
+app.use("/users", usersRoutes)
 app.use("/courses", coursesRoutes)
 app.use("/paypal", paypalRoutes)
 app.use("/auth", authRoutes)
@@ -42,7 +44,7 @@ app.get("/google357b89dfb4d4979a.html", (req, res) => {
       if (err) {
         next(err)
       } else {
-        console.log("File SENT")
+        console.log("File SENT!!")
       }
     }
   )
