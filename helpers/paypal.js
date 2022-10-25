@@ -5,44 +5,52 @@ const createOrder = async (price) => {
   const accessToken = await generateAccessToken()
 
   const url = `${PAYPAL_BASE_URL}/v2/checkout/orders`
-
-  const { data } = await axios({
-    url,
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
-    },
-    data: {
-      intent: "CAPTURE",
-      purchase_units: [
-        {
-          amount: {
-            currency_code: "USD",
-            value: price,
+  try {
+    const { data } = await axios({
+      url,
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+      data: {
+        intent: "CAPTURE",
+        purchase_units: [
+          {
+            amount: {
+              currency_code: "USD",
+              value: price,
+            },
           },
-        },
-      ],
-    },
-  })
+        ],
+      },
+    })
 
-  return data
+    return { ok: true, data }
+  } catch (error) {
+    return { ok: false, data: error }
+  }
 }
 
 const capturePayment = async (orderId) => {
   const accessToken = await generateAccessToken()
   const url = `${PAYPAL_BASE_URL}/v2/checkout/orders/${orderId}/capture`
-  const { data } = await axios({
-    url,
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${accessToken}`,
-    },
-  })
-  console.log({ data: data.purchase_units[0] })
+  try {
+    const { data } = await axios({
+      url,
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+    console.log({ data: data.purchase_units[0] })
 
-  return data
+    return { ok: true, data }
+  } catch (error) {
+    console.log({ error })
+    return { ok: false, data: error }
+  }
 }
 
 const refundPayment = async (caputreId) => {
@@ -58,11 +66,10 @@ const refundPayment = async (caputreId) => {
         Authorization: `Bearer ${accessToken}`,
       },
     })
-    console.log({ response })
 
-    return response.data
+    return { ok: true, data: response.data }
   } catch (error) {
-    console.log({ error: error.response.data })
+    return { ok: false, data: error }
   }
 }
 

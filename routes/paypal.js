@@ -11,16 +11,20 @@ const Notification = require("../models/notification")
 
 router.post("/orders", passport.authenticate("jwt"), async (req, res) => {
   const { price, courseId } = req.body
-  const order = await createOrder(price)
-  console.log({ order, user: req.user })
-  const createdSale = await Sale.create({
-    course: courseId,
-    user: req.user._id,
-    price,
-    order_id: order.id,
-    order_status: order.status,
-  })
-  res.json(order)
+
+  const { data, ok } = await createOrder(price)
+  if (ok) {
+    await Sale.create({
+      course: courseId,
+      user: req.user._id,
+      price,
+      order_id: data.id,
+      order_status: data.status,
+    })
+    res.json(data)
+  } else {
+    console.log({ error: data })
+  }
 })
 
 router.post(
@@ -28,19 +32,24 @@ router.post(
   passport.authenticate("jwt"),
   async (req, res) => {
     const { orderID } = req.params
-    const captureData = await capturePayment(orderID)
 
-    const capture_id = captureData.purchase_units[0].payments.captures[0].id
-    await Sale.findOneAndUpdate(
-      { order_id: orderID },
-      {
-        order_status: "COMPLETED",
-        capture_id,
-        payer: captureData.payer,
-      }
-    )
-    // TODO: store payment information such as the transaction ID
-    res.json(capture_id)
+    const { data, ok } = await capturePayment(orderID)
+
+    if (ok) {
+      const capture_id = data.purchase_units[0].payments.captures[0].id
+      await Sale.findOneAndUpdate(
+        { order_id: orderID },
+        {
+          order_status: "COMPLETED",
+          capture_id,
+          payer: captureData.payer,
+        }
+      )
+      // TODO: store payment information such as the transaction ID
+      res.json(capture_id)
+    } else {
+      console.log({ data })
+    }
   }
 )
 
