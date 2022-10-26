@@ -21,7 +21,7 @@ router.post("/orders", passport.authenticate("jwt"), async (req, res) => {
       order_id: data.id,
       order_status: data.status,
     })
-    res.json(data)
+    res.json({ ok: true, data })
   } else {
     console.log({ error: data })
     res.status(400).json({
