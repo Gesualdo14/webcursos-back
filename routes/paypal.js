@@ -21,15 +21,13 @@ router.post("/orders", passport.authenticate("jwt"), async (req, res) => {
       order_id: data.id,
       order_status: data.status,
     })
-    res.json({ ok: true, data })
+    res.json(data)
   } else {
     console.log({ error: data })
-    res
-      .status(400)
-      .json({
-        ok: false,
-        message: "Hubo un error al crear la orden de pago, intente más tarde",
-      })
+    res.status(400).json({
+      ok: false,
+      message: "Hubo un error al crear la orden de pago, intente más tarde",
+    })
   }
 })
 
@@ -68,7 +66,7 @@ router.post(
     const { captureID } = req.params
     try {
       await refundPayment(captureID)
-      // console.log({ refundData })
+
       await Sale.findOneAndUpdate(
         { capture_id: captureID },
         {
