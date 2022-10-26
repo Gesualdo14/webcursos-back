@@ -21,12 +21,15 @@ router.post("/orders", passport.authenticate("jwt"), async (req, res) => {
       order_id: data.id,
       order_status: data.status,
     })
-    res.json(data)
+    res.json({ ok: true, data })
   } else {
     console.log({ error: data })
     res
       .status(400)
-      .json({ ok: false, message: "Hubo un error al crear la orden de pago" })
+      .json({
+        ok: false,
+        message: "Hubo un error al crear la orden de pago, intente más tarde",
+      })
   }
 })
 
@@ -49,11 +52,11 @@ router.post(
         }
       )
       // TODO: store payment information such as the transaction ID
-      res.status(200).json(capture_id)
+      res.status(200).json({ ok: true, data: capture_id })
     } else {
       res
         .status(400)
-        .json({ ok: false, message: "Hubo un error al realizar el pago" })
+        .json({ ok: false, data: "Hubo un error al realizar el pago" })
     }
   }
 )
