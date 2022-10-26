@@ -45,7 +45,7 @@ router.post(
         {
           order_status: "COMPLETED",
           capture_id,
-          payer: captureData.payer,
+          payer: data.payer,
         }
       )
       // TODO: store payment information such as the transaction ID
