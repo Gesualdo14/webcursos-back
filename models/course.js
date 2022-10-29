@@ -1,6 +1,13 @@
 const { Schema } = require("mongoose")
 const mongoose = require("mongoose")
 
+const videoSchema = new Schema({
+  title: String,
+  videoUrl: String,
+  duration: String,
+  free: Boolean,
+})
+
 const courseSchema = new Schema(
   {
     name: String,
@@ -12,7 +19,7 @@ const courseSchema = new Schema(
         recordedAt: String,
         recordingDay: String,
         realDuration: Schema.Types.Mixed,
-        videos: [{ title: String, videoUrl: String, duration: String }],
+        videos: [videoSchema],
       },
     ],
   },

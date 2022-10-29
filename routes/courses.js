@@ -7,7 +7,7 @@ const Sale = require("../models/sales")
 router.get("/", async (req, res) => {
   console.log("HOLAAAA")
   try {
-    const courses = await Course.find()
+    const courses = await Course.find({}, { sections: 0 })
     res.status(200).json({ ok: true, data: courses })
   } catch (error) {
     console.log({ error })
@@ -33,7 +33,17 @@ router.get("/:id", async (req, res) => {
     }
     const howManySales = await Sale.countDocuments({ course: id })
 
-    const course = await Course.findById(id)
+    const course = await Course.findById(id, {
+      "sections.videos._id": 0,
+    })
+
+    for (const section of course.sections) {
+      for (const video of section.videos) {
+        if (!video.free && !hasBoughtTheCourse) {
+          video.videoUrl = ""
+        }
+      }
+    }
 
     res.status(200).json({
       ok: true,
