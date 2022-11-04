@@ -3,6 +3,7 @@ const express = require("express")
 const app = express()
 const cors = require("cors")
 const usersRoutes = require("./routes/users")
+const surveysRoutes = require("./routes/surveys")
 const coursesRoutes = require("./routes/courses")
 const paypalRoutes = require("./routes/paypal")
 const authRoutes = require("./routes/auth")
@@ -34,6 +35,7 @@ app.use("/users", usersRoutes)
 app.use("/courses", coursesRoutes)
 app.use("/paypal", paypalRoutes)
 app.use("/auth", authRoutes)
+app.use("/surveys", surveysRoutes)
 
 // GOOGLE DOMAIN VERIFICATION
 app.get("/google357b89dfb4d4979a.html", (req, res) => {
