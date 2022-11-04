@@ -5,6 +5,7 @@ const videoSchema = new Schema({
   title: String,
   videoUrl: String,
   duration: String,
+  emoji: String,
   free: Boolean,
 })
 
