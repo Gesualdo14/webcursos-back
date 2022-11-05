@@ -65,6 +65,28 @@ const dbConnect = (app) => {
       //   console.log({ result })
       // }
 
+      const courses = await Course.find()
+
+      for (let i = 0; i < courses.length; i++) {
+        const course = courses[i]
+        for (let j = 0; j < course.sections.length; j++) {
+          const section = course.sections[j]
+          for (let k = 0; k < section.videos.length; k++) {
+            const video = section.videos[k]
+            const newUrl = `https://webcursos.azureedge.net/${
+              video.videoUrl.split(".net/")[1]
+            }`
+
+            const found = await Course.findOneAndUpdate(
+              {
+                _id: course._id,
+              },
+              { $set: { [`sections.${j}.videos.${k}.videoUrl`]: newUrl } }
+            )
+          }
+        }
+      }
+
       app.listen(PORT, async () => {
         console.log(`App escuchando en puerto ${PORT}`)
       })
