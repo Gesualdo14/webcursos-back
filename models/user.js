@@ -8,6 +8,14 @@ const userSchema = new Schema(
     pictureUrl: String,
     email: String,
     googleId: String,
+    fullCreatedDate: {
+      unixDate: Number,
+      date: Date,
+      day: Number,
+      weekOfYear: Number,
+      month: Number,
+      year: Number,
+    },
   },
   {
     timestamps: true,
