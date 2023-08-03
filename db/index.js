@@ -26,7 +26,7 @@ const dbConnect = (app) => {
       // let i = 0
       // for (const user of users) {
       //   await User.findByIdAndUpdate(user._id, {
-      //     fullCreatedDate: createFullDate(),
+      //     fullCreatedDate: createFullDate(user.createdAt),
       //   })
       //   console.log(i++)
       // }
