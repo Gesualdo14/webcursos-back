@@ -2,6 +2,7 @@ const passport = require("passport")
 const GoogleStrategy = require("passport-google-oauth20").Strategy
 const JwtStrategy = require("passport-jwt").Strategy
 const User = require("../models/user")
+const createFullDate = require("../helpers/createFullDate")
 
 const jwtExtractor = (req) => {
   let token = null
@@ -54,6 +55,7 @@ passport.use(
             lastname: profile._json.family_name,
             email: profile._json.email,
             pictureUrl: profile._json.picture,
+            fullCreatedDate: createFullDate(),
           })
           return done(null, createdUser)
         }
