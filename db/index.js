@@ -1,9 +1,9 @@
 const mongoose = require("mongoose")
 const PORT = process.env.PORT
-const Course = require("../models/course")
-const User = require("../models/user")
-const createFullDate = require("../helpers/createFullDate")
-const { ObjectId } = require("mongoose").Types
+// const Course = require("../models/course")
+// const User = require("../models/user")
+// const createFullDate = require("../helpers/createFullDate")
+// const { ObjectId } = require("mongoose").Types
 
 const VIDEOS_SECTION = [
   {
@@ -26,7 +26,7 @@ const dbConnect = (app) => {
       // let i = 0
       // for (const user of users) {
       //   await User.findByIdAndUpdate(user._id, {
-      //     fullCreatedDate: createFullDate(),
+      //     fullCreatedDate: createFullDate(user.createdAt),
       //   })
       //   console.log(i++)
       // }

@@ -1,7 +1,7 @@
-const { getDate, getISOWeek, getMonth, getYear } = require("date-fns")
+const { addHours, getDate, getISOWeek, getMonth, getYear } = require("date-fns")
 
-const createFullDate = () => {
-  const date = new Date()
+const createFullDate = (fromDateString) => {
+  const date = !!fromDateString ? new Date(fromDateString) : new Date()
 
   const fullDate = {
     unixDate: +date,
