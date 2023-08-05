@@ -1,9 +1,9 @@
 const mongoose = require("mongoose")
 const PORT = process.env.PORT
-const Course = require("../models/course")
-const User = require("../models/user")
-const createFullDate = require("../helpers/createFullDate")
-const { ObjectId } = require("mongoose").Types
+// const Course = require("../models/course")
+// const User = require("../models/user")
+// const createFullDate = require("../helpers/createFullDate")
+// const { ObjectId } = require("mongoose").Types
 
 const VIDEOS_SECTION = [
   {
