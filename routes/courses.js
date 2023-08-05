@@ -6,7 +6,10 @@ const Sale = require("../models/sales")
 
 router.get("/", async (req, res) => {
   try {
-    const courses = await Course.find({}, { sections: 0 })
+    const courses = await Course.find(
+      { _id: "6356fff6a47d67068688022e" },
+      { sections: 0 }
+    )
     res.status(200).json({ ok: true, data: courses })
   } catch (error) {
     console.log({ error })
