@@ -5,7 +5,6 @@ const Course = require("../models/course")
 const Sale = require("../models/sales")
 
 router.get("/", async (req, res) => {
-  console.log("HOLAAAA")
   try {
     const courses = await Course.find({}, { sections: 0 })
     res.status(200).json({ ok: true, data: courses })
