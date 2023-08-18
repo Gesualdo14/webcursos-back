@@ -8,6 +8,7 @@ const {
 } = require("../helpers/paypal")
 const passport = require("passport")
 const Notification = require("../models/notification")
+const createFullDate = require("../helpers/createFullDate")
 
 router.post("/orders", passport.authenticate("jwt"), async (req, res) => {
   const { price, courseId } = req.body
@@ -17,9 +18,15 @@ router.post("/orders", passport.authenticate("jwt"), async (req, res) => {
     await Sale.create({
       course: courseId,
       user: req.user._id,
+      userInfo: {
+        firstname: req.user.firstname,
+        lastname: req.user.lastname,
+        email: req.user.email,
+      },
       price,
       order_id: data.id,
       order_status: data.status,
+      fullCreatedDate: createFullDate(),
     })
     res.json({ ok: true, data })
   } else {
