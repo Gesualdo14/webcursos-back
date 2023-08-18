@@ -9,6 +9,7 @@ const {
 const passport = require("passport")
 const Notification = require("../models/notification")
 const createFullDate = require("../helpers/createFullDate")
+const { Error } = require("../models/errors")
 
 router.post("/orders", passport.authenticate("jwt"), async (req, res) => {
   const { price, courseId } = req.body
@@ -31,6 +32,7 @@ router.post("/orders", passport.authenticate("jwt"), async (req, res) => {
     res.json({ ok: true, data })
   } else {
     console.log({ error: data })
+    await Error.create({ data })
     res.status(400).json({
       ok: false,
       message: "Hubo un error al crear la orden de pago, intente más tarde",
@@ -59,6 +61,7 @@ router.post(
       // TODO: store payment information such as the transaction ID
       res.status(200).json({ ok: true, data: capture_id })
     } else {
+      await Error.create({ data })
       res
         .status(400)
         .json({ ok: false, data: "Hubo un error al realizar el pago" })
