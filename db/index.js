@@ -1,7 +1,8 @@
 const mongoose = require("mongoose")
 const PORT = process.env.PORT
-// const Course = require("../models/course")
-// const User = require("../models/user")
+const Sale = require("../models/sales")
+const User = require("../models/user")
+const createFullDate = require("../helpers/createFullDate")
 // const createFullDate = require("../helpers/createFullDate")
 // const { ObjectId } = require("mongoose").Types
 
@@ -22,6 +23,22 @@ const dbConnect = (app) => {
       useUnifiedTopology: true,
     })
     .then(async (conn) => {
+      // const sales = await Sale.find()
+
+      // for (const sale of sales) {
+      //   const user = await User.findById(sale.user)
+      //   await Sale.findByIdAndUpdate(sale._id, {
+      //     $set: {
+      //       userInfo: {
+      //         firstname: user.firstname,
+      //         lastname: user.lastname,
+      //         email: user.email,
+      //       },
+      //       fullCreatedDate: createFullDate(sale.createdAt),
+      //     },
+      //   })
+      //   console.log("DONE")
+      // }
       // const users = await User.find()
       // let i = 0
       // for (const user of users) {
