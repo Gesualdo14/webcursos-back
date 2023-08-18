@@ -7,6 +7,7 @@ const saleSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "User",
     },
+    userInfo: { firstname: String, lastname: String, email: String },
     course: {
       type: Schema.Types.ObjectId,
       ref: "Course",
@@ -18,6 +19,14 @@ const saleSchema = new Schema(
     order_status: String,
     paypal_links: Schema.Types.Array,
     payer: Schema.Types.Mixed,
+    fullCreatedDate: {
+      unixDate: Number,
+      date: Date,
+      day: Number,
+      weekOfYear: Number,
+      month: Number,
+      year: Number,
+    },
   },
   {
     timestamps: true,
